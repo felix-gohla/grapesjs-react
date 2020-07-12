@@ -24,7 +24,7 @@ export interface EditorProps {
 
   presetType?: SupportedPresetType;
 
-  plugins?: string[];
+  plugins?: (string | { (editor: any): void; })[];
 
   storageManager?: any;
 
