@@ -12,6 +12,13 @@ const presets: Record<SupportedPresetType, any> = {
   mjml,
 };
 
+export interface I18N {
+  locale?: string;
+  detectLocale?: boolean;
+  localeFallback?: string;
+  messages?: any;
+}
+
 export interface EditorProps {
   id: string;
 
@@ -33,6 +40,8 @@ export interface EditorProps {
 
   blocks?: object[];
 
+  i18n?: I18N;
+
   onInit?(editor: IEditor): void;
 
   onDestroy?(editor: IEditor): void;
@@ -41,17 +50,18 @@ export interface EditorProps {
 const Editor = React.forwardRef<IEditor | null, PropsWithChildren<EditorProps>>(
   (props, ref) => {
     const {
-      onInit,
-      id,
       blockManager,
-      styleManager,
-      storageManager,
-      width,
+      children,
       height,
+      i18n,
+      id,
+      onDestroy,
+      onInit,
       plugins: propPlugins,
       presetType,
-      children,
-      onDestroy,
+      storageManager,
+      styleManager,
+      width,
     } = props;
 
     const [editor, setEditor] = React.useState<IEditor | null>(null);
@@ -66,6 +76,7 @@ const Editor = React.forwardRef<IEditor | null, PropsWithChildren<EditorProps>>(
           storageManager,
           width,
           height,
+          i18n,
           plugins: [
             presets[presetType],
             ...propPlugins,
